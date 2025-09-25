@@ -15,12 +15,10 @@ export function InfoCard({
   type,
   label,
   value,
-  alltime,
 }: {
   type: string;
   label: string;
   value: number;
-  alltime?: boolean;
 }) {
   const titleMap: Record<string, string> = {
     thisYear: "This Year",
@@ -32,14 +30,7 @@ export function InfoCard({
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
       <div className="flex justify-between items-start mb-3">
-        <h3 className="text-sm font-medium text-gray-600">
-          {title}
-          {alltime && (
-            <span className="text-xs ml-2 font-medium border border-gray-500 rounded px-1">
-              all time
-            </span>
-          )}
-        </h3>
+        <h3 className="text-sm font-medium text-gray-600">{title}</h3>
         <div className="flex gap-2 items-center">
           <span className="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-full">
             {label}
@@ -60,12 +51,10 @@ export function TopInfoCard({
   type,
   label,
   value,
-  alltime,
 }: {
   type: string;
   label: string;
   value: number;
-  alltime?: boolean;
 }) {
   const titleMap: Record<string, string> = {
     topCompany: "Top Company",
