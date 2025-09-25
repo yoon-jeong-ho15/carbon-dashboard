@@ -19,6 +19,10 @@ export async function fetchCompanies(): Promise<Company[]> {
   return _companies;
 }
 
+//
+//
+//
+
 export async function fetchPosts(): Promise<Post[]> {
   await delay(jitter());
   return _posts;

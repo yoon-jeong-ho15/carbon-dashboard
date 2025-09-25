@@ -42,13 +42,13 @@ export default function YearAnalytics() {
       <YearInfoCard type="companies" year={"2025"} value={5} />
       <div></div>
       <YearInfoCard type="overall" year={"2025"} value={40} />
+      <YearInfoCard type="monthAvg" year={"2025"} value={1100} />
       <YearInfoCard
         className="col-span-2"
         type="total"
         year={"2025"}
         value={10000}
       />
-      <YearInfoCard type="monthAvg" year={"2025"} value={1100} />
 
       <MonthlyCompare className="col-span-4" selectedYear={selectedYear} />
       <MontlyCompany className="col-span-4" selectedYear={selectedYear} />
