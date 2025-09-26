@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import CompanyInfoCard, { CompanySummary } from "./company/company-info-card";
+import CompanyInfoCard, { CompanySummary } from "./company/c-info-card";
 import { useCompanyAnalysis } from "@/app/hooks/useCompanies";
 import { Company } from "@/app/lib/type";
-import CompanyInfoChart from "./company/company-info-chart";
+import CompanyInfoChart from "./company/c-charts";
+import CompanySourceChart from "./company/c-source";
 
 export default function CompanyAnalytics() {
   const { companyAnalysis, isLoading, error } = useCompanyAnalysis();
@@ -15,6 +16,26 @@ export default function CompanyAnalytics() {
       <div className="flex gap-4 items-center mb-4">
         <span className="text-sm font-medium">Companies:</span>
         <div className="flex gap-1">
+          <div className="border-r pr-2 mr-2 border-gray-500">
+            <button
+              onClick={() => {
+                if (selectedCompanyIds.length === companyAnalysis?.length) {
+                  setSelectedCompanyIds([]);
+                } else {
+                  setSelectedCompanyIds(
+                    companyAnalysis?.map((c) => c.id) || []
+                  );
+                }
+              }}
+              className={`px-3 py-1 text-sm transition-all ${
+                selectedCompanyIds.length === companyAnalysis?.length
+                  ? "bg-blue-500 text-white rounded-sm"
+                  : "bg-gray-300 hover:bg-gray-300 rounded-xl"
+              }`}
+            >
+              Select All
+            </button>
+          </div>
           {companyAnalysis?.map((company) => (
             <button
               key={company.id}
@@ -27,7 +48,7 @@ export default function CompanyAnalytics() {
               }}
               className={`px-3 py-1 text-sm rounded-full transition-colors ${
                 selectedCompanyIds.includes(company.id)
-                  ? "bg-blue-500 text-white"
+                  ? "bg-emerald-600 text-white"
                   : "bg-gray-200 hover:bg-gray-300"
               }`}
             >
@@ -76,7 +97,7 @@ export default function CompanyAnalytics() {
                   value={Math.round(company.monthlyAverage)}
                 />
 
-                {/* 연간 점유율 */}
+                {/* 연간 배출 점유율 */}
                 <CompanyInfoChart
                   className="col-span-2"
                   type="ratio-trend"
@@ -110,9 +131,8 @@ export default function CompanyAnalytics() {
                 />
 
                 {/* 소스별 분석 */}
-                <CompanyInfoChart
+                <CompanySourceChart
                   className="col-span-1"
-                  type="sources"
                   data={company.sourceEmissions.map((item) => ({
                     name: item.source,
                     value: item.emissions,

@@ -1,5 +1,6 @@
 import { Company } from "@/app/lib/type";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function CompanyInfoCard({
   type,
@@ -33,13 +34,26 @@ export default function CompanyInfoCard({
         <h3 className="text-sm font-medium text-gray-600">{title}</h3>
       </div>
 
-      <p
-        className={`font-bold text-gray-900 mb-1 ${
-          type === "overall" ? "text-5xl text-center" : "text-3xl"
-        }`}
-      >
-        {value?.toLocaleString()}
-      </p>
+      <div className="flex divide-x divide-gray-500">
+        {type === "country" && (
+          <div className="py-1 px-2 mr-2">
+            <Image
+              src={`/flag/${value}.png`}
+              alt="Flag"
+              width={48}
+              height={32}
+              className="inline-block shadow"
+            />
+          </div>
+        )}
+        <p
+          className={`font-bold text-gray-900 mb-1 ${
+            type === "overall" ? "text-5xl text-center" : "text-4xl"
+          }`}
+        >
+          {value?.toLocaleString()}
+        </p>
+      </div>
 
       <span className="text-sm font-medium text-gray-500">
         {type === "overall" ? null : type === "country" ? null : "tCO₂e"}

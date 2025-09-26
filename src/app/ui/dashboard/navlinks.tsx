@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  BuildingOfficeIcon,
+  BuildingOffice2Icon,
   ChartBarIcon,
   DocumentDuplicateIcon,
   MagnifyingGlassCircleIcon,
@@ -19,7 +19,7 @@ const links = [
   {
     name: "Companies",
     href: "/dashboard/companies",
-    icon: BuildingOfficeIcon,
+    icon: BuildingOffice2Icon,
   },
   { name: "Reports", href: "/dashboard/reports", icon: DocumentDuplicateIcon },
 ];

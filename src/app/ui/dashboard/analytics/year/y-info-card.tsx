@@ -6,7 +6,7 @@ export function YearInfoCard({
 }: {
   type: string;
   year: string;
-  value: number;
+  value: number | string;
   className?: string;
 }) {
   const titleMap: Record<string, string> = {
@@ -28,10 +28,10 @@ export function YearInfoCard({
 
       <p
         className={`font-bold text-gray-900 mb-1 ${
-          type === "overall" ? "text-5xl text-center" : "text-3xl"
+          type === "overall" ? "text-5xl text-center" : "text-4xl"
         }`}
       >
-        {value.toLocaleString()}
+        {value}
       </p>
 
       <p className="text-sm text-gray-500">

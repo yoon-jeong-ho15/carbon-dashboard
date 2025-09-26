@@ -1,57 +1,86 @@
 "use client";
 
-import { useState } from "react";
-import MontlyCompany from "./year/montly-company";
-import MonthlyCompare from "./year/montly-compare";
-import { YearInfoCard } from "./year/year-info-card";
+import MontlyCompany from "./year/m-company";
+import MonthlyEmissionChart from "./year/m-emission";
+import { YearInfoCard } from "./year/y-info-card";
 import TotalTrend from "./year/total-trend";
+import { useYearDetails, useYearlyAnalysis } from "@/app/hooks/useYears";
+import YearlyCompany from "./year/y-company";
+import YearlySourceChart from "./year/y-source";
+import { useSearchParams } from "next/navigation";
+import YearSelect from "./year/y-select";
 
 export default function YearAnalytics() {
-  const [selectedYear, setSelectedYear] = useState<number>(2025);
+  const searchParams = useSearchParams();
+  const selectedYear = searchParams.get("year") || "2025";
+  const { yearDetails, isLoading, error } = useYearDetails(selectedYear);
+  const {
+    yearDetails: prevYearDetails,
+    isLoading: prevLoading,
+    error: prevError,
+  } = useYearDetails(Number(selectedYear) - 1 + "");
+
+  if (isLoading || prevLoading) {
+    return <div>loading</div>;
+  }
+
+  if (error || prevError) {
+    return <div>error</div>;
+  }
+
+  if (!yearDetails) {
+    return <div>No data available</div>;
+  }
 
   return (
     <div className="grid grid-cols-8 gap-3">
-      <div className="col-span-8">
-        <TotalTrend />
-      </div>
+      <TotalTrend className="col-span-8" />
 
-      {/* <div className="bg-gray-100">
-          Selected the year
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(Number(e.target.value))}
-            className="px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {availableYears.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div> */}
-      <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100 col-span-2">
-        <div className="flex justify-between items-start mb-3">
-          <h3 className="text-sm font-medium text-gray-600">Selected Year</h3>
-          <div className="flex gap-2 items-center"></div>
-        </div>
+      <YearSelect selectedYear={selectedYear} />
 
-        <p className="text-6xl font-bold text-gray-900 mb-1 mt-4 text-center">
-          2025
-        </p>
-      </div>
-      <YearInfoCard type="companies" year={"2025"} value={5} />
-      <div></div>
-      <YearInfoCard type="overall" year={"2025"} value={40} />
-      <YearInfoCard type="monthAvg" year={"2025"} value={1100} />
       <YearInfoCard
-        className="col-span-2"
-        type="total"
-        year={"2025"}
-        value={10000}
+        type="overall"
+        year={selectedYear}
+        value={(Math.random() * 70 + 30).toFixed(1)}
+      />
+      <YearInfoCard
+        type="companies"
+        year={selectedYear}
+        value={yearDetails.companyCount}
+      />
+      <MonthlyEmissionChart
+        className="col-span-4 row-span-2"
+        currentYearData={yearDetails.monthlyEmissions}
+        previousYearData={prevYearDetails?.monthlyEmissions}
       />
 
-      <MonthlyCompare className="col-span-4" selectedYear={selectedYear} />
-      <MontlyCompany className="col-span-4" selectedYear={selectedYear} />
+      <YearInfoCard
+        className="col-span-1"
+        type="monthAvg"
+        year={selectedYear}
+        value={yearDetails.monthlyAverage.toLocaleString()}
+      />
+
+      <YearInfoCard
+        className="col-span-1"
+        type="total"
+        year={selectedYear}
+        value={yearDetails.totalEmissions.toLocaleString()}
+      />
+
+      <YearlySourceChart
+        className="col-span-2"
+        data={yearDetails.sourceEmissions}
+      />
+      <YearlyCompany
+        className="col-span-4 row-span-2"
+        year={selectedYear}
+        companyEmissions={yearDetails.companyEmissions}
+      />
+      <MontlyCompany
+        className="col-span-4 row-span-2"
+        year={selectedYear}
+      />
     </div>
   );
 }
