@@ -52,7 +52,7 @@ export default function MonthlyEmissionChart({
           <YAxis domain={[1000, 2000]} />
           <Tooltip
             formatter={(value: number, name: string) => [
-              `${value} tCO2eq`,
+              `${value} tCO₂e`,
               name === "currentYear"
                 ? `${currentYearData[0].yearMonth.substring(0, 4)}`
                 : `${previousYearData[0].yearMonth.substring(0, 4)}`,

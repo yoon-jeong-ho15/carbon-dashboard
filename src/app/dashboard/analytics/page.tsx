@@ -1,7 +1,7 @@
 import AnalyticsNavbar from "@/app/ui/dashboard/analytics/analytics-navbar";
-import YearAnalytics from "@/app/ui/dashboard/analytics/year-analytics";
 import CompanyAnalytics from "@/app/ui/dashboard/analytics/company-analytics";
 import SourceAnalytics from "@/app/ui/dashboard/analytics/source-analytics";
+import YearAnalytics from "@/app/ui/dashboard/analytics/year-analytics";
 
 export default async function Page(props: {
   searchParams?: Promise<{

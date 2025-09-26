@@ -221,3 +221,138 @@ export function useYearCompanyMonthlyData(year: string) {
     ...rest,
   };
 }
+
+// Overview 페이지를 위한 종합 데이터
+export function useOverviewData() {
+  const { data: companies, ...rest } = useYears();
+
+  const overviewData = useMemo(() => {
+    if (!companies) return null;
+
+    // 현재 날짜 기준으로 최근 12개월 계산
+    const now = new Date();
+    const recentMonths: string[] = [];
+
+    for (let i = 11; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth() - 1 - i, 1);
+      const yearMonth = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}`;
+      recentMonths.push(yearMonth);
+    }
+
+    // 1) 최근 12개월 월별 배출량 (전체 회사)
+    const recentMonthlyEmissions = recentMonths.map((yearMonth) => {
+      const totalEmissions = companies.reduce((sum, company) => {
+        const monthData = company.emissions
+          .filter((e) => e.yearMonth === yearMonth)
+          .reduce((monthSum, e) => monthSum + e.emissions, 0);
+        return sum + monthData;
+      }, 0);
+
+      return {
+        yearMonth,
+        month: yearMonth.split("-")[1],
+        year: yearMonth.split("-")[0],
+        emissions: totalEmissions,
+      };
+    });
+
+    // 2) 회사별 전체기간 배출량 총합
+    const companyTotalEmissions = companies
+      .map((company) => {
+        const totalEmissions = company.emissions.reduce(
+          (sum, e) => sum + e.emissions,
+          0
+        );
+        return {
+          id: company.id,
+          name: company.name,
+          country: company.country,
+          totalEmissions,
+        };
+      })
+      .sort((a, b) => b.totalEmissions - a.totalEmissions);
+
+    // 3) 국가별 전체기간 배출량 총합
+    const countryEmissions: Record<string, number> = {};
+    companies.forEach((company) => {
+      const companyTotal = company.emissions.reduce(
+        (sum, e) => sum + e.emissions,
+        0
+      );
+      countryEmissions[company.country] =
+        (countryEmissions[company.country] || 0) + companyTotal;
+    });
+
+    const countryTotalEmissions = Object.entries(countryEmissions)
+      .map(([country, emissions]) => ({
+        country,
+        emissions,
+      }))
+      .sort((a, b) => b.emissions - a.emissions);
+
+    // 4) 소스별 전체기간 배출량 총합
+    const sourceEmissions: Record<string, number> = {};
+    companies.forEach((company) => {
+      company.emissions.forEach((emission) => {
+        sourceEmissions[emission.source] =
+          (sourceEmissions[emission.source] || 0) + emission.emissions;
+      });
+    });
+
+    const sourceTotalEmissions = Object.entries(sourceEmissions)
+      .map(([source, emissions]) => ({
+        source,
+        emissions,
+      }))
+      .sort((a, b) => b.emissions - a.emissions);
+
+    // 전체 통계
+    const totalEmissions = companies.reduce(
+      (sum, company) =>
+        sum +
+        company.emissions.reduce(
+          (companySum, e) => companySum + e.emissions,
+          0
+        ),
+      0
+    );
+
+    const totalCompanies = companies.length;
+    const totalCountries = Object.keys(countryEmissions).length;
+    const totalSources = Object.keys(sourceEmissions).length;
+
+    return {
+      // 최근 12개월 데이터
+      recentMonthlyEmissions,
+      recentMonths,
+
+      // 분류별 총합
+      companyTotalEmissions,
+      countryTotalEmissions,
+      sourceTotalEmissions,
+
+      // 전체 통계
+      totalEmissions,
+      totalCompanies,
+      totalCountries,
+      totalSources,
+
+      // 평균
+      averageEmissionsPerCompany:
+        totalCompanies > 0 ? totalEmissions / totalCompanies : 0,
+      averageEmissionsPerMonth:
+        recentMonthlyEmissions.length > 0
+          ? recentMonthlyEmissions.reduce((sum, m) => sum + m.emissions, 0) /
+            recentMonthlyEmissions.length
+          : 0,
+    };
+  }, [companies]);
+
+  return {
+    overviewData,
+    companies,
+    ...rest,
+  };
+}

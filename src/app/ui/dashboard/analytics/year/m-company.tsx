@@ -58,7 +58,7 @@ export default function MonthlyCompany({
           <YAxis />
           <Tooltip
             formatter={(value: number, name: string) => [
-              `${value.toFixed(1)} tCO2eq`,
+              `${value.toFixed(1)} tCO₂e`,
               name,
             ]}
             labelFormatter={(label) => {
