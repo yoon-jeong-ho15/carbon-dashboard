@@ -79,6 +79,7 @@ export default function MonthlyCompany({
                 r: 4,
               }}
               name={companyName}
+              animationDuration={200}
             />
           ))}
         </LineChart>

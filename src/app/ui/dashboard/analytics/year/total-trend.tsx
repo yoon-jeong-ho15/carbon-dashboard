@@ -66,6 +66,7 @@ export default function TotalTrend({ className }: { className: string }) {
             radius={[2, 2, 0, 0]}
             onClick={(data) => handleYearChange(data.payload.year)}
             cursor={"pointer"}
+            animationDuration={200}
           >
             {allMonthlyData.map((entry: any, index: number) => {
               const isSelected = entry.year === selectedYear;

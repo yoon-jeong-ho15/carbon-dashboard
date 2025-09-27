@@ -9,6 +9,7 @@ import YearlyCompany from "./year/y-company";
 import YearlySourceChart from "./year/y-source";
 import { useSearchParams } from "next/navigation";
 import YearSelect from "./year/y-select";
+import { useMemo } from "react";
 
 export default function YearAnalytics() {
   const searchParams = useSearchParams();
@@ -77,10 +78,7 @@ export default function YearAnalytics() {
         year={selectedYear}
         companyEmissions={yearDetails.companyEmissions}
       />
-      <MontlyCompany
-        className="col-span-4 row-span-2"
-        year={selectedYear}
-      />
+      <MontlyCompany className="col-span-4 row-span-2" year={selectedYear} />
     </div>
   );
 }

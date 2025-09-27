@@ -66,7 +66,7 @@ export default function YearlyCompany({
               boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
             }}
           />
-          <Bar dataKey="emissions" radius={[4, 4, 0, 0]} name="Total Emissions">
+          <Bar dataKey="emissions" radius={[4, 4, 0, 0]} name="Total Emissions" animationDuration={200}>
             {companyEmissions?.map((entry: any, index: number) => (
               <Cell
                 key={`cell-${index}`}

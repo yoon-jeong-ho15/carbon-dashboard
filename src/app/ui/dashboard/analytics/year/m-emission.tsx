@@ -77,6 +77,7 @@ export default function MonthlyEmissionChart({
             strokeWidth={2}
             dot={{ fill: "#10B981", strokeWidth: 2, r: 4 }}
             name="currentYear"
+            animationDuration={200}
           />
           {previousYearData && (
             <Line
@@ -86,6 +87,7 @@ export default function MonthlyEmissionChart({
               strokeWidth={2}
               dot={{ fill: "#a1a1aa", strokeWidth: 2, r: 4 }}
               name="previousYear"
+              animationDuration={200}
             />
           )}
         </LineChart>

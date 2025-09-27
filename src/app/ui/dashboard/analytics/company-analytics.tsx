@@ -82,7 +82,7 @@ export default function CompanyAnalytics() {
                 <CompanyInfoCard
                   className="col-span-2"
                   type="overall"
-                  value={Math.round(company.totalEmissions)}
+                  value={(Math.random() * 70 + 30).toFixed(1)}
                 />
 
                 {/* 총 배출량 */}

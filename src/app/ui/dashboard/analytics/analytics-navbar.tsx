@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import {
   ClockIcon,
@@ -14,18 +14,20 @@ const categories = [
   { key: "source", label: "By Source", icon: CircleStackIcon },
 ];
 
-export default function AnalyticsNavbar() {
+interface AnalyticsNavbarProps {
+  selectedCategory: string;
+}
+
+export default function AnalyticsNavbar({ selectedCategory }: AnalyticsNavbarProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const selectedCategory = searchParams.get("category") || "year";
 
   const handleCategoryChange = useCallback(
     (category: string) => {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams();
       params.set("category", category);
       router.push(`?${params.toString()}`);
     },
-    [router, searchParams]
+    [router]
   );
 
   return (
