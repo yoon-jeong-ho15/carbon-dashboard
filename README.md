@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Carbon Emissions Dashboard
 
-## Getting Started
+> 다국적 대기업 경영팀을 위한 탄소 배출량 통합 관리 플랫폼
 
-First, run the development server:
+## 📊 프로젝트 개요
+
+**타겟 사용자**: 다국적 대기업 경영팀 및 ESG 담당자
+**목적**: 전세계 계열사들의 탄소 배출량 통합 관리 및 전략적 분석
+
+### ✨ 핵심 특징
+
+#### 🎯 **업무 환경 최적화**
+
+- **데스크탑 우선 설계**: 회의실 대형 모니터와 개인 업무용 PC 환경에 최적화
+- **링크 공유 기능**: URL 파라미터를 통해 동료에게 쉽게 공유 가능
+- **직관적 탐색**: 드롭다운 대신 차트 클릭으로 "발견 → 탐색" 패턴 지원
+
+#### ⚡ **성능 및 사용성**
+
+- **React Query**: 지능적 캐싱으로 빠른 페이지 전환
+- **인터랙티브 차트**: 연도/회사별 드릴다운 분석 지원
+
+## 🔧 주요 기능
+
+### 📈 **Overview 대시보드**
+
+- 최근 12개월 배출량 한눈에 파악
+- 13개 핵심 지표 카드로 전체 현황 요약
+- 월간 배출량 트렌드 라인 차트
+
+### 📊 **Analytics 분석**
+
+#### 연도별 분석
+
+- 전체 기간 바 차트에서 특정 연도 클릭으로 상세 분석
+- 전년 대비 월별 배출량 비교
+- 종합 평점 시스템 (목표 달성률, 개선도, 효율성 등)
+
+#### 회사별 분석
+
+- 그리드 레이아웃으로 계열사 비교
+- 지역/업종/규모별 벤치마킹
+- 다중 선택으로 클러스터 분석
+
+#### 소스별 분석 (미구현)
+
+- 연료/에너지원별 배출량 분석
+- 리스크 분산 관점 차트
+- 비용 효율성 분석
+
+### 🏢 **Companies 관리** (미구현)
+
+- 계열사 기본 정보 및 프로필
+- 회사별 세부 배출량 정보
+
+### 📝 **Reports 관리** (필수기능만 구현)
+
+- 리포트 작성/수정/삭제 (CRUD)
+- 경영진 정기 보고서 히스토리 관리
+
+## 시작하기
+
+### 설치 및 실행
 
 ```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저에서 [http://localhost:3000](http://localhost:3000) 접속
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 기술 스택
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 15 (App Router) + React 19
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **State Management**: React Query (서버 상태) + URL Parameters (필터 상태)
+- **Charts**: Recharts (React 친화적 차트 라이브러리)
+- **Icons**: Heroicons
 
-## Learn More
+### 아키텍처 특징
 
-To learn more about Next.js, take a look at the following resources:
+- **상태 분리**: 서버 상태(React Query), URL 상태(공유 가능), 클라이언트 상태(일시적)
+- **데이터 플로우**: API → 훅에서 가공 → 컴포넌트 렌더링
+- **캐싱 전략**: 배출량 데이터(5분), 리포트(실시간)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> 💡 자세한 설계 의도와 기술적 결정사항은 [DEVELOPMENT.md](./DEVELOPMENT.md)를 참고하세요.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 프로젝트 구조
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── dashboard/           # 대시보드 페이지
+│   │   ├── (overview)/     # 메인 대시보드
+│   │   ├── analytics/      # 분석 페이지
+│   │   ├── companies/      # 회사 관리
+│   │   └── reports/        # 리포트 관리
+│   ├── ui/                 # UI 컴포넌트
+│   ├── lib/                # 핵심 유틸리티
+│   └── hooks/              # 커스텀 React 훅
+```

@@ -20,16 +20,19 @@ export default function Page() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    createPostMutation.mutate({
-      title: formData.title,
-      resourceUid: formData.resourceUid,
-      dateTime: `${formData.year}-${formData.month}`,
-      content: formData.content,
-    }, {
-      onSuccess: () => {
-        router.push("/dashboard/reports");
+    createPostMutation.mutate(
+      {
+        title: formData.title,
+        resourceUid: formData.resourceUid,
+        dateTime: `${formData.year}-${formData.month}`,
+        content: formData.content,
       },
-    });
+      {
+        onSuccess: () => {
+          router.push("/dashboard/reports");
+        },
+      }
+    );
   };
 
   const handleChange = (

@@ -18,6 +18,7 @@ export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // 시간관계상 수정하지 못했지만 write페이지처럼 리액트쿼리 뮤테이션을 사용할 예정.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
